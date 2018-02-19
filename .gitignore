@@ -1,3 +1,4 @@
-*jpg
-*png
-*html
+*.jpg
+*.png
+*.html
+*.pyc
