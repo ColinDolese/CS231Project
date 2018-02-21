@@ -2,13 +2,12 @@ import random
 from yattag import Doc
 
 
-def generateHTML():
-	doc, tag, text, line = Doc().ttl()
-	doc, tag, text, line = Doc().ttl()
-	pageHTML = generateSections(doc, tag, text, line)
-	html = parsePageHTML(pageHTML, doc, tag, text, line)
-	return html
+def generatePageHTML():
+	return generateSections()
 
+def convertToHTML(pageHTML):
+	doc, tag, text, line = Doc().ttl()
+	return parsePageHTML(doc, tag, text, line)
 
 
 def htmlColor(r, g, b):
@@ -59,7 +58,7 @@ def addClasses():
 	classes += '/'
 	return classes
 
-def generateSections(doc, tag, text, line):
+def generateSections():
 
 	pageHTML = ''
 	sectionTitles = ['header', 'article', 'aside', 'nav', 'footer']

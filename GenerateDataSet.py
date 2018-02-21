@@ -1,20 +1,4 @@
 from PageHTMLGenerator import *
-
-
-
-def getHTMLPages():
-	htmlPages = []
-	for i in range(50):
-		html = generateHTML()
-		page = 'page' + str(i+1) + '.html'
-		f = open(page,"w")
-		f.write(html)
-		f.close()
-		htmlPages.append(page)
-
-	return htmlPages
-
-from HTMLGenerator import *
 from HTMLToImage import *
 import os
 
@@ -22,7 +6,8 @@ def getHTMLPages():
         htmlPages = []
         driver = open_driver()  #from HTMLToImage
         for i in range(10):
-                html = generateHTML()
+                pageHTML = generatePageHTML()
+                html = covertToHTML(pageHTML)
                 page = 'page' + str(i+1) + '.html'
                 f = open(page,"w")
                 f.write(html)
