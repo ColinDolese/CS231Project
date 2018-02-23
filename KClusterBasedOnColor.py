@@ -10,9 +10,23 @@ def extract_all_clusters(center, flat_label, img_small):
     original_flat_label = flat_label
     original_center = center.copy()
     segments = []
+    
+    #get correct ordering from x to y
+    ordering = []
+    previous_label = -1
+    label_index = 0
+    res = center[flat_label]
+    flat_img_small = img_small.reshape((res.shape))
+    for label in flat_label:
+        if label != previous_label and label not in ordering:
+            upcoming_center_color = center[label]
+            #if the colors are close enough - epsilon 5
+            if np.linalg.norm(flat_img_small[label_index]-upcoming_center_color) < 5:
+                ordering.append(label)
+                previous_label = label
+        label_index += 1
+            
     for i in range(5):
-##        print center
-##        print i
 ##        print list(set(flat_label))
         #   Set every other cluster to one other cluster
         otherI = 0
@@ -20,8 +34,9 @@ def extract_all_clusters(center, flat_label, img_small):
             otherI = 1
         flat_label = np.where(flat_label < i, otherI, flat_label)
         flat_label = np.where(flat_label > i, otherI, flat_label)
-        #   Set that other cluster to be white
+        #   Set that other clusters to be black-white
         center[otherI] = [255,255,255]
+        center[i] = [0,0,0]
         res = center[flat_label]
         res2 = res.reshape((img_small.shape))
         segments.append(res2)
@@ -33,11 +48,10 @@ def extract_all_clusters(center, flat_label, img_small):
 
     #plot
     plt.subplot(231), plt.imshow(img_small), plt.title("Original")
-    plt.subplot(232), plt.imshow(segments[0]), plt.title("segment 1")
-    plt.subplot(233), plt.imshow(segments[1]), plt.title("segment 2")
-    plt.subplot(234), plt.imshow(segments[2]), plt.title("segment 3")
-    plt.subplot(235), plt.imshow(segments[3]), plt.title("segment 4")
-    plt.subplot(236), plt.imshow(segments[4]), plt.title("segment 5")
+    pltNumber = 231
+    for i in range(5):
+        pltNumber += 1
+        plt.subplot(pltNumber), plt.imshow(segments[ordering[i]]), plt.title("segment " + str(i))
     plt.show()
 
 
@@ -50,10 +64,11 @@ def k_cluster(img_path):
     Z = np.float32(Z)
 
     # define criteria, number of clusters(K) and apply kmeans()
-    criteria = (cv2.TERM_CRITERIA_EPS, 10, 10e-6)
+    criteria = (cv2.TERM_CRITERIA_EPS, 10, 10e-4)
     K = 5
     ret,label,center=cv2.kmeans(Z,K,None,criteria,10,cv2.KMEANS_RANDOM_CENTERS)
-
+    
+    
     # Now convert back into uint8, and make original image
     center = np.uint8(center)
     flat_label = label.flatten()
