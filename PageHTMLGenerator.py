@@ -12,6 +12,7 @@ def convertToHTML(pageHTML):
 	return parsePageHTML(pageHTML, doc, tag, text, line)
 
 
+
 def htmlColor(r, g, b):
     def _chkarg(a):
         if isinstance(a, int): # clamp to range 0--255
@@ -107,6 +108,7 @@ def containedInClass(classes, section):
 
 def parsePageHTML(pageHTML, doc, tag, text, line):
 	sectionTitles = ['header', 'article', 'aside', 'nav', 'footer']
+
 	sections = pageHTML.split('/')
 	classes = sections[0].split(',')
 	doc.asis('<!DOCTYPE html>')
