@@ -1,13 +1,14 @@
-from PageHTMLGenerator import *
+from VectorHTMLGenerator import *
 from HTMLToImage import *
 import os
 
 def getHTMLPages():
         htmlPages = []
+        HTMLRanges = buildRangesDictionary()
         driver = open_driver()  #from HTMLToImage
         for i in range(10):
-                pageHTML = generatePageHTML()
-                html = covertToHTML(pageHTML)
+                vectorHTML = generateVectorHTML(HTMLRanges)
+                html = convertToHTML(vectorHTML, HTMLRanges)
                 page = 'page' + str(i+1) + '.html'
                 f = open(page,"w")
                 f.write(html)

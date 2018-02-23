@@ -11,7 +11,7 @@ def save_html_into_image(driver, url, filename):
 
 def open_driver():
     DRIVER = 'chromedriver'
-    driver = webdriver.Chrome(DRIVER)
+    driver = webdriver.Chrome()
     return driver
 
 def quit_driver(driver):

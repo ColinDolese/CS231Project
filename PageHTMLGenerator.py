@@ -1,13 +1,15 @@
 import random
+import numpy as np
 from yattag import Doc
 
 
 def generatePageHTML():
 	return generateSections()
 
+
 def convertToHTML(pageHTML):
 	doc, tag, text, line = Doc().ttl()
-	return parsePageHTML(doc, tag, text, line)
+	return parsePageHTML(pageHTML, doc, tag, text, line)
 
 
 def htmlColor(r, g, b):
@@ -151,8 +153,6 @@ def parsePageHTML(pageHTML, doc, tag, text, line):
 
 
 	return doc.getvalue()
-
-
 
 
 
