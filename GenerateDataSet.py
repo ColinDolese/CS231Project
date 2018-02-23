@@ -5,9 +5,9 @@ import os
 def getHTMLPages():
         htmlPages = []
         driver = open_driver()  #from HTMLToImage
-        for i in range(10):
+        for i in range(3):
                 pageHTML = generatePageHTML()
-                html = covertToHTML(pageHTML)
+                html = convertToHTML(pageHTML)
                 page = 'page' + str(i+1) + '.html'
                 f = open(page,"w")
                 f.write(html)

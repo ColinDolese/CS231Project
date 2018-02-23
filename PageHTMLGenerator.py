@@ -7,7 +7,7 @@ def generatePageHTML():
 
 def convertToHTML(pageHTML):
 	doc, tag, text, line = Doc().ttl()
-	return parsePageHTML(doc, tag, text, line)
+	return parsePageHTML(pageHTML,doc, tag, text, line)
 
 
 def htmlColor(r, g, b):
@@ -105,6 +105,7 @@ def containedInClass(classes, section):
 
 def parsePageHTML(pageHTML, doc, tag, text, line):
 	sectionTitles = ['header', 'article', 'aside', 'nav', 'footer']
+
 	sections = pageHTML.split('/')
 	classes = sections[0].split(',')
 	doc.asis('<!DOCTYPE html>')
