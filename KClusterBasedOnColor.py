@@ -45,14 +45,14 @@ def extract_all_clusters(center, flat_label, img_small):
 ##        cv2.destroyAllWindows()
         flat_label = original_flat_label
         center = original_center
-
+    return segments, ordering
     #plot
-    plt.subplot(231), plt.imshow(img_small), plt.title("Original")
-    pltNumber = 231
-    for i in range(5):
-        pltNumber += 1
-        plt.subplot(pltNumber), plt.imshow(segments[ordering[i]]), plt.title("segment " + str(i))
-    plt.show()
+##    plt.subplot(231), plt.imshow(img_small), plt.title("Original")
+##    pltNumber = 231
+##    for i in range(5):
+##        pltNumber += 1
+##        plt.subplot(pltNumber), plt.imshow(segments[ordering[i]]), plt.title("segment " + str(i))
+##    plt.show()
 
 
 def k_cluster(img_path):
@@ -64,7 +64,7 @@ def k_cluster(img_path):
     Z = np.float32(Z)
 
     # define criteria, number of clusters(K) and apply kmeans()
-    criteria = (cv2.TERM_CRITERIA_EPS, 10, 10e-4)
+    criteria = (cv2.TERM_CRITERIA_EPS, 10, 1)
     K = 5
     ret,label,center=cv2.kmeans(Z,K,None,criteria,10,cv2.KMEANS_RANDOM_CENTERS)
     
@@ -73,9 +73,14 @@ def k_cluster(img_path):
     center = np.uint8(center)
     flat_label = label.flatten()
 
-    extract_all_clusters(center, flat_label, img_small)
-                
+    segments, ordering = extract_all_clusters(center, flat_label, img_small)
+    output = []
+    for i in range(len(segments)):
+        output.append(segments[ordering[i]])
+    return segments, ordering        
 
-k_cluster('page1.png')
-k_cluster('page2.png')
-k_cluster('page3.png')
+##k_cluster('page1.png')
+##print ('done')
+##k_cluster('page2.png')
+##print ('done')
+##k_cluster('page3.png')
