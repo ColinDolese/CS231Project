@@ -55,6 +55,8 @@ def extract_all_clusters(center, flat_label, img_small):
 ##    plt.show()
 
 
+#input: img_path - 'page1.png'
+#output: output - ordered list of segments
 def k_cluster(img_path):
     img = cv2.imread(img_path)
     img_small = cv2.resize(img,(0,0), fx=0.5, fy=0.5)
@@ -77,7 +79,7 @@ def k_cluster(img_path):
     output = []
     for i in range(len(segments)):
         output.append(segments[ordering[i]])
-    return segments, ordering        
+    return output      
 
 ##k_cluster('page1.png')
 ##print ('done')
