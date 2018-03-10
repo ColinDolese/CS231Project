@@ -28,4 +28,4 @@ def getHTMLPages(numPagesGen):
         quit_driver(driver)   #from HTMLToImage
         return htmlPages, vectorHTMLs, pageNames
 
-##getHTMLPages(10)
+##getHTMLPages(5)

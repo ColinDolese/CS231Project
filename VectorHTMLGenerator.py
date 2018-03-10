@@ -95,16 +95,21 @@ def parseVectorHTML(vectorHTML, ranges, doc, tag, text, line):
 
 	with tag('body'):
 		with tag('header'):
-			text('vector1')
+##			text('vector1')
+                        text('')
 		with tag('div', klass='class'):
 			with tag('article'):
-				text('vector2')
+##				text('vector2')
+                                text('')
 			with tag('nav'):
-				text('vector4')
+##				text('vector4')
+                                text('')
 			with tag('aside'):
-				text('vector3')
+##				text('vector3')
+                                text('')
 		with tag('footer'):
-			text('vector5')
+##			text('vector5')
+                        text('')
 
 
 	return doc.getvalue()
