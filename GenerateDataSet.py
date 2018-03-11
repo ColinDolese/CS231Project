@@ -6,7 +6,7 @@ def getHTMLPages():
         htmlPages = []
         HTMLRanges = buildRangesDictionary()
         driver = open_driver()  #from HTMLToImage
-        for i in range(10):
+        for i in range(15):
                 vectorHTML = generateVectorHTML(HTMLRanges)
                 html = convertToHTML(vectorHTML, HTMLRanges)
                 page = 'page' + str(i+1) + '.html'

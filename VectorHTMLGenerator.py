@@ -67,7 +67,6 @@ def generateVectorHTML(HTMLRanges):
 	vector[3] = np.array([random.randint(1, len(HTMLRanges['background'])-1),0, random.randint(1, len(HTMLRanges['flex'])-1), 0, 0, 0, 0, order[1], 1])
 	vector[4] = np.array([random.randint(1, len(HTMLRanges['background'])-1),0, random.randint(1, len(HTMLRanges['flex'])-1), 0, 0, 0, 0, order[2], 1])
 	vector[5] = np.array([random.randint(1, len(HTMLRanges['background'])-1),0, 0, 0, random.randint(1,len(HTMLRanges['height'])-1),  0, 0, 0, 1])
-
 	return vector
 	
 def convertToHTML(vectorHTML, ranges):
