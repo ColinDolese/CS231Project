@@ -2,6 +2,7 @@ from VectorHTMLGenerator import *
 from HTMLToImage import *
 import os
 
+
 def getHTMLPages(numPagesGen):
         htmlPages = []
         vectorHTMLs = []
@@ -10,8 +11,9 @@ def getHTMLPages(numPagesGen):
         driver = open_driver()  #from HTMLToImage
         for i in range(numPagesGen):
                 vectorHTML = generateVectorHTML(HTMLRanges)
-                vectorHTMLs.append(vectorHTML)
+
                 html = convertToHTML(vectorHTML, HTMLRanges)
+                vectorHTMLs.append(vectorHTML)
                 page = 'page' + str(i+1) + '.html'
                 f = open(page,"w")
                 f.write(html)

@@ -54,13 +54,21 @@ def buildRangesDictionary():
 
 
 
-
 def generateVectorHTML(HTMLRanges):
 	order = [1,2,3]
 	random.shuffle(order)
 	vector = np.zeros((6,len(HTMLRanges)), dtype=int)
 
-	# vector: [display, flex, flex-direction, height, margin, min-height, order, padding]
+	'''
+	vectorHTML: [   body  ]
+				[  header ]
+				[ article ]
+				[  aside  ]
+				[   nav   ]
+				[  footer ]
+	'''
+
+	# vector: [background, display, flex, flex-direction, height, margin, min-height, order, padding ]
 	vector[0] = np.array([0,1,0 ,1, 0,  random.randint(1,len(HTMLRanges['margin'])-1), random.randint(1,len(HTMLRanges['min-height'])-1), 0, 0])
 	vector[1] = np.array([random.randint(1, len(HTMLRanges['background'])-1),0, 0, 0, random.randint(1,len(HTMLRanges['height'])-1),  0, 0, 0, 1])
 	vector[2] = np.array([random.randint(1, len(HTMLRanges['background'])-1),0, random.randint(1, len(HTMLRanges['flex'])-1), 0, 0, 0, 0, order[0], 1])
