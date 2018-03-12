@@ -66,15 +66,18 @@ def generateVectorHTML(HTMLRanges):
 				[  aside  ]
 				[   nav   ]
 				[  footer ]
+
+	vector: [background, display, flex, flex-direction, height, margin, min-height, order, padding ]		
 	'''
 
-	# vector: [background, display, flex, flex-direction, height, margin, min-height, order, padding ]
+	background = random.sample(range(1, len(HTMLRanges['background'])-1), len(HTMLRanges)-1)
+
 	vector[0] = np.array([0,1,0 ,1, 0,  random.randint(1,len(HTMLRanges['margin'])-1), random.randint(1,len(HTMLRanges['min-height'])-1), 0, 0])
-	vector[1] = np.array([random.randint(1, len(HTMLRanges['background'])-1),0, 0, 0, random.randint(1,len(HTMLRanges['height'])-1),  0, 0, 0, 1])
-	vector[2] = np.array([random.randint(1, len(HTMLRanges['background'])-1),0, random.randint(1, len(HTMLRanges['flex'])-1), 0, 0, 0, 0, order[0], 1])
-	vector[3] = np.array([random.randint(1, len(HTMLRanges['background'])-1),0, random.randint(1, len(HTMLRanges['flex'])-1), 0, 0, 0, 0, order[1], 1])
-	vector[4] = np.array([random.randint(1, len(HTMLRanges['background'])-1),0, random.randint(1, len(HTMLRanges['flex'])-1), 0, 0, 0, 0, order[2], 1])
-	vector[5] = np.array([random.randint(1, len(HTMLRanges['background'])-1),0, 0, 0, random.randint(1,len(HTMLRanges['height'])-1),  0, 0, 0, 1])
+	vector[1] = np.array([background[0],0, 0, 0, random.randint(1,len(HTMLRanges['height'])-1),  0, 0, 0, 1])
+	vector[2] = np.array([background[1],0, random.randint(1, len(HTMLRanges['flex'])-1), 0, 0, 0, 0, order[0], 1])
+	vector[3] = np.array([background[2],0, random.randint(1, len(HTMLRanges['flex'])-1), 0, 0, 0, 0, order[1], 1])
+	vector[4] = np.array([background[3],0, random.randint(1, len(HTMLRanges['flex'])-1), 0, 0, 0, 0, order[2], 1])
+	vector[5] = np.array([background[4],0, 0, 0, random.randint(1,len(HTMLRanges['height'])-1),  0, 0, 0, 1])
 	return vector
 	
 def convertToHTML(vectorHTML, ranges):
@@ -143,10 +146,6 @@ def htmlColor(r, g, b):
     g = _chkarg(g)
     b = _chkarg(b)
     return '#{:02x}{:02x}{:02x}'.format(r,g,b)
-
-
-
-
 
 
 

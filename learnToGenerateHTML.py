@@ -136,6 +136,7 @@ def main():
     callbacks_list = [checkpoint]
     NUM_EPOCHS = 10
     epochCount = 0
+    
     #   run forever basically
     for i in range(100000000):
         X_train, Y_train = createData(DATASAMPLES_TRAIN)
