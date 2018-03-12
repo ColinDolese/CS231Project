@@ -3,18 +3,21 @@ from HTMLToImage import *
 import os
 
 
-def getHTMLPages(numPagesGen):
+def getHTMLPages(numPagesGen, training, trainpath, testpath):
         htmlPages = []
         vectorHTMLs = []
         pageNames = []
         HTMLRanges = buildRangesDictionary()
         driver = open_driver()  #from HTMLToImage
+        path = trainpath
+        if training == False:
+                path = testpath
         for i in range(numPagesGen):
                 vectorHTML = generateVectorHTML(HTMLRanges)
 
                 html = convertToHTML(vectorHTML, HTMLRanges)
                 vectorHTMLs.append(vectorHTML)
-                page = 'page' + str(i+1) + '.html'
+                page = path+'/page' + str(i+1) + '.html'
                 f = open(page,"w")
                 f.write(html)
                 f.close()
@@ -22,7 +25,7 @@ def getHTMLPages(numPagesGen):
                 #       Generate image from html
                 url = 'file:///'+os.getcwd() +'/' + page
                 url = url.replace('\\', '/')
-                picName = 'page'+str(i+1)+'.png'
+                picName = path+'/page'+str(i+1)+'.png'
                 save_html_into_image(driver, url, picName)
                 pageNames.append(picName)
                 #       Or get png data directly
