@@ -31,7 +31,7 @@ def extract_all_clusters(center, flat_label, img_small):
             closestToWhite = c
 
             closestToWhiteDist = dist
-    
+    center_colors_ordered = [[255,255,255]]
     for label in flat_label:
         if label != previous_label and label not in ordering and label != labelToAdd:
             upcoming_center_color = center[label]
@@ -39,6 +39,7 @@ def extract_all_clusters(center, flat_label, img_small):
             if np.linalg.norm(res[label_index]-upcoming_center_color) == 0:
                 if np.linalg.norm(closestToWhite-upcoming_center_color) > 10:    #if not all white
                     ordering.append(label)
+                    center_colors_ordered.append(upcoming_center_color)
                 else:
                     labelToAdd = label
                 previous_label = label
@@ -81,11 +82,12 @@ def extract_all_clusters(center, flat_label, img_small):
 ##    plt.show()
     
     
-    return segments, ordering
+    return segments, ordering, center_colors_ordered
 
 
 #input: img_path - 'page1.png'
 #output: output - ordered list of segments
+#       ordered_colors - use in testing to get real test colors
 def k_cluster(img_path):
     print img_path
     img = cv2.imread(img_path)
@@ -97,14 +99,14 @@ def k_cluster(img_path):
     flat_label = clt.fit_predict(Z)
     center = clt.cluster_centers_.astype("uint8")
    
-    segments, ordering = extract_all_clusters(center, flat_label, img_small)
+    segments, ordering, ordered_colors = extract_all_clusters(center, flat_label, img_small)
 
     output = []
     for i in range(len(ordering)):
         output.append(segments[ordering[i]])
-    return output      
+    return output, ordered_colors    
 
-##segments = k_cluster('test_data/2018_03_11-1805/page6.png')
+##segments, ordered_colors = k_cluster('test_data/2018_03_11-1805/page6.png')
 ##print segments[0].shape
 ####print ('done')
 ##k_cluster('page2.png')

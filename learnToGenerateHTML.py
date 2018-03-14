@@ -45,7 +45,7 @@ def createData(numSamples, training = True):
     print "start segmenting"
     i = 0
     for img in pageNames:
-        real_segments = k_cluster(img) # unflattened segments
+        real_segments, _ = k_cluster(img) # unflattened segments
         segments = []
         for segment in real_segments:
             segments.append(segment.flatten())
