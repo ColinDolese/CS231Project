@@ -91,7 +91,7 @@ def extract_all_clusters(center, flat_label, img_small):
 def k_cluster(img_path):
     print img_path
     img = cv2.imread(img_path)
-    img_small = cv2.resize(img,(0,0), fx=1, fy=1)
+    img_small = cv2.resize(img,(200,200))
 
 ##    Z = cv2.cvtColor(img_small, cv2.COLOR_BGR2LAB)
     Z = img_small.reshape((img_small.shape[0]*img_small.shape[1],3))

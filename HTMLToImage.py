@@ -6,12 +6,15 @@ def get_binary_data_from_url(driver, url):
     
 def save_html_into_image(driver, url, filename):
     driver.get(url)
+    driver.fullscreen_window()
     screenshot = driver.save_screenshot(filename)
  
 
 def open_driver():
     DRIVER = 'chromedriver'
     driver = webdriver.Chrome()
+##    driver = webdriver.maximize_window()
+##    driver.set_window_size(1024,768)
     return driver
 
 def quit_driver(driver):
