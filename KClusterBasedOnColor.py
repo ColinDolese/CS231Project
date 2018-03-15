@@ -100,9 +100,10 @@ def k_cluster(img_path):
     center = clt.cluster_centers_.astype("uint8")
    
     segments, ordering, ordered_colors = extract_all_clusters(center, flat_label, img_small)
-
+##    print segments[0].shape
     output = []
     for i in range(len(ordering)):
+    
         output.append(segments[ordering[i]])
     return output, ordered_colors    
 
