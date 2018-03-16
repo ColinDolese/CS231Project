@@ -5,23 +5,13 @@ from yattag import Doc
 
 def buildRangesDictionary():
 
-	minHeightRange = ['']
-	for i in range(50, 100):
-		minHeightRange.append(str(i) + 'vh')
-
 	marginRange = ['']
 	for i in range(20):
 		marginRange.append(str(i))
 
 	heightRange = ['']
-	for i in range(1, 25):
+	for i in range(1, 90):
 		heightRange.append(str(i) + 'vh')
-
-	flexRange = ['']
-	for i in range(1,25):
-		for j in range(1,25):
-			for k in range(1,25):
-				flexRange.append(str(i) + ' ' + str(j) + ' ' + str(k) + 'vw')
 
 	colorRange = ['']
 	for i in range(0,255):
@@ -34,18 +24,17 @@ def buildRangesDictionary():
 	ranges['background'] = colorRange
 	ranges['display'] = ['', 'flex']
 
-	ranges['min-height'] = minHeightRange
 
 	ranges['flex-direction'] = ['', 'column']
 
-	ranges['margin'] = marginRange
+	ranges['margin'] = ['', '0', '1']
 
 	ranges['height'] = heightRange
 
 
 	ranges['order'] = ['', '1', '2', '3']
 
-	ranges['flex'] = flexRange
+	ranges['flex'] = ['', '1']
 
 	ranges['padding'] = ['', '1em']
 
@@ -67,17 +56,19 @@ def generateVectorHTML(HTMLRanges):
 				[   nav   ]
 				[  footer ]
 
-	vector: [background, display, flex, flex-direction, height, margin, min-height, order, padding ]		
+	vector: [background, display, flex, flex-direction, height, margin, order, padding ]		
 	'''
 
 	background = random.sample(range(1, len(HTMLRanges['background'])-1), len(HTMLRanges)-1)
 
-	vector[0] = np.array([0,1,0 ,1, 0,  random.randint(1,len(HTMLRanges['margin'])-1), random.randint(1,len(HTMLRanges['min-height'])-1), 0, 0])
-	vector[1] = np.array([background[0],0, 0, 0, random.randint(1,len(HTMLRanges['height'])-1),  0, 0, 0, 1])
-	vector[2] = np.array([background[1],0, random.randint(1, len(HTMLRanges['flex'])-1), 0, 0, 0, 0, order[0], 1])
-	vector[3] = np.array([background[2],0, random.randint(1, len(HTMLRanges['flex'])-1), 0, 0, 0, 0, order[1], 1])
-	vector[4] = np.array([background[3],0, random.randint(1, len(HTMLRanges['flex'])-1), 0, 0, 0, 0, order[2], 1])
-	vector[5] = np.array([background[4],0, 0, 0, random.randint(1,len(HTMLRanges['height'])-1),  0, 0, 0, 1])
+
+	bodyHeight = random.randint(30,len(HTMLRanges['height'])-1)
+	vector[0] = np.array([0,1,0 ,1, bodyHeight, random.randint(1,len(HTMLRanges['margin'])-1), 0, 0])
+	vector[1] = np.array([background[0],0, 0, 0, random.randint(10,(bodyHeight/2)-1),  0, 0, 1])
+	vector[2] = np.array([background[1],0, 1, 0, 0, 0, order[0], 1])
+	vector[3] = np.array([background[2],0, 0, 0, 0, 0, order[1], 1])
+	vector[4] = np.array([background[3],0, 0, 0, 0, 0, order[2], 1])
+	vector[5] = np.array([background[4],0, 0, 0, random.randint(10,(bodyHeight/2)-1),  0, 0, 1])
 	return vector
 	
 def convertToHTML(vectorHTML, ranges):

@@ -34,3 +34,5 @@ def getHTMLPages(numPagesGen, training, trainpath, testpath):
         return htmlPages, vectorHTMLs, pageNames
 
 ##getHTMLPages(5)
+
+getHTMLPages(1, True, "test_data/","train_data/")
