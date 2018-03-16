@@ -15,6 +15,12 @@ from datetime import datetime
 from sklearn.multioutput import MultiOutputRegressor
 from sklearn.ensemble import GradientBoostingRegressor
 
+#   SET MODEL HERE
+# ------------------
+#0 - keras neural network
+#1 - SVM
+LEARNING_MODEL = 1 
+
 #If the folders before datetime.now don't exist then create them manually. otherwise might encounter errors
 #Might not have to do that, but if you get errors, then you know wazzupp
 dateTimeNow = str(datetime.now().strftime("%Y_%m_%d-%H%M"))
@@ -27,9 +33,7 @@ DATASAMPLES_TRAIN = 500
 
 GENERATE_NEW_TEST = False
 
-#0 - keras neural network
-#1 - SVM
-LEARNING_MODEL = 1 
+
 
 
 def formatVectorHTML(vectorHTML, ranges):
@@ -144,22 +148,30 @@ def main():
     if not os.path.exists(TESTPATH):
         os.makedirs(TESTPATH)
 
+    #   Unnecessary right now. just set to false. This is to create test data, but we do it in test
     if GENERATE_NEW_TEST:
+        print "Generating test data" 
+
         X_test, Y_test, _ = createData(DATASAMPLES_TEST, False)
 
         np.save(TESTPATH+"/x_Test.npy", X_test)
         np.save(TESTPATH+"/y_Test.npy", Y_test)
+        print "Done with test data"
   
-    filepath = FOLDERNAME+"/weightsBest.hdf5"
-    checkpoint = ModelCheckpoint(filepath, monitor='loss', verbose =1, save_best_only=True, mode='auto', period = 1)
-    callbacks_list = [checkpoint]
-    NUM_EPOCHS = 100000
-    epochCount = 0
 
-   
+
+    #   Get train data
+    print "Generating train data"
     X_train, Y_train, _ = createData(DATASAMPLES_TRAIN)
+    print "Done with train data"
 
+    #Not working
     if LEARNING_MODEL == 0:
+        filepath = FOLDERNAME+"/weightsBest.hdf5"
+        checkpoint = ModelCheckpoint(filepath, monitor='loss', verbose =1, save_best_only=True, mode='auto', period = 1)
+        callbacks_list = [checkpoint]
+        NUM_EPOCHS = 100000
+        epochCount = 0
         model = larger_model(X_train[0], Y_train[0])
         history = model.fit(X_train,Y_train,validation_split=0.1, epochs = NUM_EPOCHS, batch_size = 10,
                   callbacks=callbacks_list, verbose = 0, initial_epoch = epochCount)
@@ -168,11 +180,15 @@ def main():
 ##    pyplot.plot(history.history['mean_squared_error'])
 ##    pyplot.show()
     elif LEARNING_MODEL == 1:
+        print "Start SVM learn"
         model = MultiOutputRegressor(GradientBoostingRegressor(random_state=0)).fit(X_train, Y_train)
+        print "SVM learn done"
         print "Score on train: "
         print model.score(X_train, Y_train)
+        print "Start saving model"
         dumpPath = FOLDERNAME+'/svmModel.sav'
         pickle.dump(model, open(dumpPath, 'wb'))
+        print "Saved model to: " + dumpPath
     return
 
 if __name__ == '__main__':
