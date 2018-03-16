@@ -4,7 +4,6 @@ import os
 
 def formatVectorHTML(vectorHTMLEntry, ranges):
     vecCopy = np.copy(vectorHTMLEntry).astype(float)
-    print(vecCopy)
     for i in range(vecCopy.shape[0]):
         vecCopy[i][0] = 0
         vecCopy[i][6] = 0
