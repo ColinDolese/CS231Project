@@ -20,7 +20,7 @@ FOLDERNAME = "experiment_models/"+dateTimeNow
 TESTPATH ="test_data/"+dateTimeNow
 TRAINPATH = "train_data/"+dateTimeNow
 
-DATASAMPLES_TEST = 100
+DATASAMPLES_TEST = 5
 DATASAMPLES_TRAIN = 100
 
 GENERATE_NEW_TEST = False
@@ -30,7 +30,7 @@ def formatVectorHTML(vectorHTMLEntry):
     # set "background" attribute to 0
     vecCopy[0] = 0
     # set "order" attribute to 0
-    vecCopy[7] = 0
+    vecCopy[6] = 0
     return normalize(vecCopy.reshape(-1,1), axis=0, norm='l1').flatten()
 
      
@@ -46,55 +46,47 @@ def createData(numSamples, training = True):
     i = 0
     for img in pageNames:
         real_segments, _ = k_cluster(img) # unflattened segments
+        if len(real_segments) < 6:
+            print "clustering returned junk"
+            i += 1
+            continue
         segments = []
         for segment in real_segments:
-            segments.append(segment.flatten())
+            #gridify:
+            OneDSegment = []
+            flatSegment = segment.flatten()
+            for seg_i in range(0,len(segment.flatten()), 3):
+                #white
+                if flatSegment[seg_i] == 255:
+                    OneDSegment.append(1)
+                #black
+                elif flatSegment[seg_i] == 0:
+                    OneDSegment.append(0)
+                #gray
+                elif flatSegment[seg_i] == 127:
+                    OneDSegment.append(2)
+            segments.append(OneDSegment)
 
-##        #1. Turn the whole image black and white (test out if this makes sense
-##        #for vector0 (body)
-##        img_gray = cv2.imread(img, 0)
-##        img_gray = cv2.resize(img_gray,(0,0), fx=0.5, fy=0.5)
-##        (thresh, img_bw) = cv2.threshold(img_gray, 128, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
-        
-        
-        #   Gridify? TODO: maybe
         
         #2. Match vectorHTMLs with segments
         #   Currently assuming that vec 2-4 are in random order
         xSamples.append(np.array(segments[0]))
         xSamples.append(np.array(segments[1]))
 
-##        xEntry = [segments[0], segments[1]]
         ySamples.append(np.array(formatVectorHTML(vectorHTMLs[i][0])))
         ySamples.append(np.array(formatVectorHTML(vectorHTMLs[i][1])))
-##        yEntry = [formatVectorHTML(vectorHTMLs[i][0]), formatVectorHTML(vectorHTMLs[i][1])]
         #go over middle vectors that are in random order
         addedVectors = 0
         while addedVectors < 3:
             for vec in vectorHTMLs[i][2:-1]:
                 if vec[-2] == addedVectors + 1:
                     ySamples.append(np.array(formatVectorHTML(vec)))
-##                    yEntry.append(formatVectorHTML(vec))
                     #-2 index is "order" according to generateVectorHTML
                     xSamples.append(np.array(segments[vec[-2]+1]))
-##                    xEntry.append(segments[vec[-2]+1])
                     addedVectors += 1
             
         xSamples.append(np.array(segments[-1]))
         ySamples.append(np.array(formatVectorHTML(vectorHTMLs[i][-1])))
-##        xEntry.append(segments[-1])
-##        yEntry.append(formatVectorHTML(vectorHTMLs[i][-1]))
-
-        #3. convert to numpy arrays
-##        xEntry = np.array(xEntry)
-##        yEntry = np.array(yEntry)
-
-      
-
-        #4. Add to xSamples and ySamples
-##        xSamples.append(xEntry)
-##        ySamples.append(yEntry)
-##        print xEntry.shape, yEntry.shape
         print ("segment " + str(i) + " done")
 
         i += 1
@@ -129,10 +121,10 @@ def main():
     X_test, Y_test = createData(DATASAMPLES_TEST, False)
 
     np.save(TESTPATH+"/x_Test.npy", X_test)
-    np.save(TESTPATH+"/y_Test.dat", Y_test)
+    np.save(TESTPATH+"/y_Test.npy", Y_test)
   
     filepath = FOLDERNAME+"/weights.{epoch:02d}.hdf5"
-    checkpoint = ModelCheckpoint(filepath, monitor='loss', verbose =1, save_best_only=True, mode='auto', period = 10)
+    checkpoint = ModelCheckpoint(filepath, monitor='loss', verbose =1, save_best_only=True, mode='auto', period = 1)
     callbacks_list = [checkpoint]
     NUM_EPOCHS = 10
     epochCount = 0
