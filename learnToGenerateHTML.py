@@ -25,15 +25,17 @@ DATASAMPLES_TRAIN = 100
 
 GENERATE_NEW_TEST = False
 
-def formatVectorHTML(vectorHTMLEntry, ranges):
-    vecCopy = np.copy(vectorHTMLEntry)
-    # set "background" attribute to 0
-    vecCopy[0] = 0
-    # set "order" attribute to 0
-    vecCopy[6] = 0
-    
-    return normalize(vecCopy.reshape(-1,1), axis=0, norm='l1').flatten()
 
+def formatVectorHTML(vectorHTML, ranges):
+    vecCopy = np.copy(vectorHTML).astype(float)
+    print(vecCopy)
+    for i in range(vecCopy.shape[0]):
+        vecCopy[i][0] = 0
+        vecCopy[i][6] = 0
+        for j, attr in enumerate(sorted(ranges.iterkeys())):
+                vecCopy[i][j] /= (len(ranges[attr])-1)
+    
+    return vecCopy
      
 
 def createData(numSamples, training = True):
@@ -71,23 +73,26 @@ def createData(numSamples, training = True):
         
         #2. Match vectorHTMLs with segments
         #   Currently assuming that vec 2-4 are in random order
+
+        normVecHTML = formatVectorHTML(vectorHTMLs[i])
+
         xSamples.append(np.array(segments[0]))
         xSamples.append(np.array(segments[1]))
 
-        ySamples.append(np.array(formatVectorHTML(vectorHTMLs[i][0])))
-        ySamples.append(np.array(formatVectorHTML(vectorHTMLs[i][1])))
+        ySamples.append(np.array(normVecHTML[0]))
+        ySamples.append(np.array(normVecHTML[1]))
         #go over middle vectors that are in random order
         addedVectors = 0
         while addedVectors < 3:
-            for vec in vectorHTMLs[i][2:-1]:
+            for vec in normVecHTML[2:-1]:
                 if vec[-2] == addedVectors + 1:
-                    ySamples.append(np.array(formatVectorHTML(vec)))
+                    ySamples.append(np.array(vec))
                     #-2 index is "order" according to generateVectorHTML
                     xSamples.append(np.array(segments[vec[-2]+1]))
                     addedVectors += 1
             
         xSamples.append(np.array(segments[-1]))
-        ySamples.append(np.array(formatVectorHTML(vectorHTMLs[i][-1])))
+        ySamples.append(np.array(normVecHTML[-1]))
         print ("segment " + str(i) + " done")
 
         i += 1
