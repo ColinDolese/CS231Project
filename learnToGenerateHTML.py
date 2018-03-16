@@ -25,12 +25,13 @@ DATASAMPLES_TRAIN = 100
 
 GENERATE_NEW_TEST = False
 
-def formatVectorHTML(vectorHTMLEntry):
+def formatVectorHTML(vectorHTMLEntry, ranges):
     vecCopy = np.copy(vectorHTMLEntry)
     # set "background" attribute to 0
     vecCopy[0] = 0
     # set "order" attribute to 0
     vecCopy[6] = 0
+    
     return normalize(vecCopy.reshape(-1,1), axis=0, norm='l1').flatten()
 
      
@@ -39,7 +40,7 @@ def createData(numSamples, training = True):
     xSamples = []
     ySamples = []
     print "about to get HTML pages"
-    _, vectorHTMLs, pageNames = getHTMLPages(numSamples, training, TRAINPATH, TESTPATH)
+    _, vectorHTMLs, pageNames, ranges = getHTMLPages(numSamples, training, TRAINPATH, TESTPATH)
 
     print "finished getting HTML pages"
     print "start segmenting"

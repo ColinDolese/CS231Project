@@ -31,8 +31,8 @@ def getHTMLPages(numPagesGen, training, trainpath, testpath):
                 #       Or get png data directly
                 #screenshot = get_binary_data_from_url()
         quit_driver(driver)   #from HTMLToImage
-        return htmlPages, vectorHTMLs, pageNames
+        return htmlPages, vectorHTMLs, pageNames, HTMLRanges
 
 ##getHTMLPages(5)
 
-getHTMLPages(1, True, "test_data/","train_data/")
+getHTMLPages(20, True, "test_data/","train_data/")

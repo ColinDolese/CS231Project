@@ -19,6 +19,12 @@ def buildRangesDictionary():
 			for k in range(0,255):
 				colorRange.append(str(htmlColor(i,j,k)))
 
+	flexRange = ['']
+	for i in range(1,25):
+		for j in range(1,25):
+			for k in range(1,25):
+				flexRange.append(str(i) + ' ' + str(j) + ' ' + str(k) + 'vw')
+
 
 	ranges = {}
 	ranges['background'] = colorRange
@@ -34,7 +40,7 @@ def buildRangesDictionary():
 
 	ranges['order'] = ['', '1', '2', '3']
 
-	ranges['flex'] = ['', '1']
+	ranges['flex'] = flexRange
 
 	ranges['padding'] = ['', '1em']
 
@@ -65,9 +71,9 @@ def generateVectorHTML(HTMLRanges):
 	bodyHeight = random.randint(30,len(HTMLRanges['height'])-1)
 	vector[0] = np.array([0,1,0 ,1, bodyHeight, random.randint(1,len(HTMLRanges['margin'])-1), 0, 0])
 	vector[1] = np.array([background[0],0, 0, 0, random.randint(10,(bodyHeight/2)-1),  0, 0, 1])
-	vector[2] = np.array([background[1],0, 1, 0, 0, 0, order[0], 1])
-	vector[3] = np.array([background[2],0, 0, 0, 0, 0, order[1], 1])
-	vector[4] = np.array([background[3],0, 0, 0, 0, 0, order[2], 1])
+	vector[2] = np.array([background[1],0, random.randint(1,len(HTMLRanges['flex'])-1), 0, 0, 0, order[0], 1])
+	vector[3] = np.array([background[2],0, random.randint(1,len(HTMLRanges['flex'])-1), 0, 0, 0, order[1], 1])
+	vector[4] = np.array([background[3],0, random.randint(1,len(HTMLRanges['flex'])-1), 0, 0, 0, order[2], 1])
 	vector[5] = np.array([background[4],0, 0, 0, random.randint(10,(bodyHeight/2)-1),  0, 0, 1])
 	return vector
 	
