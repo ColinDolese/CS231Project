@@ -11,7 +11,6 @@ def formatVectorHTML(vectorHTMLEntry, ranges):
         for j, attr in enumerate(sorted(ranges.iterkeys())):
                 vecCopy[i][j] /= (len(ranges[attr])-1)
     
-    print(vecCopy)
     return vecCopy
 
 
