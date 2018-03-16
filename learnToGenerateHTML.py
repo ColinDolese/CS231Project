@@ -31,7 +31,6 @@ def formatVectorHTML(vectorHTML, ranges):
     print(vecCopy)
     for i in range(vecCopy.shape[0]):
         vecCopy[i][0] = 0
-        vecCopy[i][6] = 0
         for j, attr in enumerate(sorted(ranges.iterkeys())):
                 vecCopy[i][j] /= (len(ranges[attr])-1)
     
@@ -74,7 +73,7 @@ def createData(numSamples, training = True):
         #2. Match vectorHTMLs with segments
         #   Currently assuming that vec 2-4 are in random order
 
-        normVecHTML = formatVectorHTML(vectorHTMLs[i])
+        normVecHTML = formatVectorHTML(vectorHTMLs[i], ranges)
 
         xSamples.append(np.array(segments[0]))
         xSamples.append(np.array(segments[1]))
@@ -86,6 +85,7 @@ def createData(numSamples, training = True):
         while addedVectors < 3:
             for vec in normVecHTML[2:-1]:
                 if vec[-2] == addedVectors + 1:
+                	vec[6] = 0
                     ySamples.append(np.array(vec))
                     #-2 index is "order" according to generateVectorHTML
                     xSamples.append(np.array(segments[vec[-2]+1]))
