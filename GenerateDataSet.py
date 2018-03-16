@@ -47,4 +47,4 @@ def getHTMLPages(numPagesGen, training, trainpath, testpath):
 
 ##getHTMLPages(5)
 
-getHTMLPages(1, True, "test_data/","train_data/")
+##getHTMLPages(1, True, "test_data/","train_data/")

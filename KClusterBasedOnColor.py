@@ -10,7 +10,7 @@ def extract_all_clusters(center, flat_label, img_small):
     original_center = center.copy()
     segments = []
 ##    print center
-
+    
     res = center[flat_label]
     
     original_image = res.reshape((img_small.shape))
@@ -28,7 +28,7 @@ def extract_all_clusters(center, flat_label, img_small):
     for c in center:
         dist = np.linalg.norm([255,255,255]-c)
         if dist < closestToWhiteDist:
-            closestToWhite = c
+            closestToWhite = [int (x) for x in c]
 
             closestToWhiteDist = dist
     center_colors_ordered = [[255,255,255]]
@@ -44,11 +44,18 @@ def extract_all_clusters(center, flat_label, img_small):
                     labelToAdd = label
                 previous_label = label
         label_index += 1
-            
+    
 ##    print ordering
     #reorder ordering to have body as the first element
     ordering.insert(0,labelToAdd)
+
+    # Something went wrong
+    if len(ordering) < 6:
+        print "couldn't find 6 clusters that are different from one another"
+        return [], [], []
 ##    print ordering
+    
+##    print closestToWhite
     for i in range(len(ordering)):
 ##        print list(set(flat_label))
         #   Set every other cluster to one other cluster
@@ -59,7 +66,13 @@ def extract_all_clusters(center, flat_label, img_small):
         flat_label = np.where(flat_label > i, otherI, flat_label)
         #   Set all clusters to be black-white depending on their belonging
         #if body set it to be some other color, else set it to black
-        if np.linalg.norm(closestToWhite-center[i]) == 0:    #if all white
+        centerComparison = [int(x) for x in center[i]]
+        centerDistance = np.array(closestToWhite)-np.array(centerComparison)
+##        print centerComparison
+##        print closestToWhite
+##        print centerDistance
+##        print np.linalg.norm(centerDistance)
+        if np.linalg.norm(centerDistance) == 0:    #if all white
             center[i] = [127, 127, 127]
         else:
             center[i]= [0,0,0]
@@ -80,7 +93,7 @@ def extract_all_clusters(center, flat_label, img_small):
 ##        pltNumber += 1
 ##        plt.subplot(pltNumber), plt.imshow(segments[ordering[i]]), plt.title("segment " + str(i))
 ##    plt.show()
-    
+##    
     
     return segments, ordering, center_colors_ordered
 
@@ -89,7 +102,7 @@ def extract_all_clusters(center, flat_label, img_small):
 #output: output - ordered list of segments
 #       ordered_colors - use in testing to get real test colors
 def k_cluster(img_path):
-    print img_path
+##    print img_path
     img = cv2.imread(img_path)
     img_small = cv2.resize(img,(200,200))
 
