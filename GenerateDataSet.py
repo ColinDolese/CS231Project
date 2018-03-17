@@ -2,9 +2,8 @@ from VectorHTMLGenerator import *
 from HTMLToImage import *
 import os
 
-def formatVectorHTML(vectorHTMLEntry, ranges):
-    vecCopy = np.copy(vectorHTMLEntry).astype(float)
-    print(vecCopy)
+def normalizeVectorHTML(vectorHTML, ranges):
+    vecCopy = np.copy(vectorHTML).astype(float)
     for i in range(vecCopy.shape[0]):
         vecCopy[i][0] = 0
         vecCopy[i][6] = 0
@@ -12,6 +11,14 @@ def formatVectorHTML(vectorHTMLEntry, ranges):
                 vecCopy[i][j] /= (len(ranges[attr])-1)
     
     return vecCopy
+
+def denormalizeVectorHTML(normVectorHTML, ranges):
+    vecCopy = np.copy(normVectorHTML)
+    for i in range(vecCopy.shape[0]):
+        for j, attr in enumerate(sorted(ranges.iterkeys())):
+                vecCopy[i][j] *= (len(ranges[attr])-1)
+    
+    return np.around(vecCopy).astype(int)
 
 
 def getHTMLPages(numPagesGen, training, trainpath, testpath):
@@ -27,7 +34,6 @@ def getHTMLPages(numPagesGen, training, trainpath, testpath):
                 vectorHTML = generateVectorHTML(HTMLRanges)
 
                 html = convertToHTML(vectorHTML, HTMLRanges)
-                formatVectorHTML(vectorHTML, HTMLRanges)
                 vectorHTMLs.append(vectorHTML)
                 page = path+'/page' + str(i+1) + '.html'
                 f = open(page,"w")
