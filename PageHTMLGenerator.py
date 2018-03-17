@@ -94,7 +94,7 @@ def generateSections():
 		if i < len(sectionTitles)-1:
 			pageHTML += '/'
 
-	print(pageHTML)
+##	print(pageHTML)
 	return pageHTML
 
 

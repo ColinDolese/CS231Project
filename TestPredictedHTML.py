@@ -1,26 +1,54 @@
 import os
+import pickle
+import numpy as np
+from sklearn.multioutput import MultiOutputRegressor
+from sklearn.ensemble import GradientBoostingRegressor
 from learnToGenerateHTML import *
 
-def generate_outputs(nn, x_test,y_test):
-    for i in range(2):
-        test = x_test[i].reshape(1,-1)
-        prediction = nn.predict(test)
-        print prediction
-        print y_test[i]
+#0 - neural network
+#1 - SVM
+TEST_MODEL = 1
+DATETIME = '2018_03_16-1244' #  Set this for the folder where your model resides
+FILENAME = "experiment_models/"+DATETIME+'/svmModel.sav'
+
+dateTimeNow = str(datetime.now().strftime("%Y_%m_%d-%H%M"))
+TESTPATH ="test_data/"+dateTimeNow
+
+NUM_TEST_SAMPLES_TO_CREATE = 50
 
 def main():
     #set filename(for model) manually
-    filename =
-   
-    print(filename)
-  
-    model.load_weights(filename)
-    generate_outputs(model, x_test,y_test)
-##    lst = sorted(os.listdir("experiment_models")[1:], key=lambda x:int(x.split('.')[1]))
-##    #   Need to get x_test, y_test still and also set the folder
-##    for filename in lst:
-##        if filename.endswith(".hdf5"):
-##            print(filename)
-##            model = larger_model()
-##            model.load_weights("experiment_models/%s" % filename)
-##            generate_outputs(nn, x_test,y_test, filename, iteration = 0)
+    if TEST_MODEL == 1:
+        X_test, Y_test, segment_colors = createData(NUM_TEST_SAMPLES_TO_CREATE, False)
+        loaded_model = pickle.load(open(FILENAME, 'rb'))
+        score = loaded_model.score(X_test, Y_test)
+        print "Score of the model on the test: "
+        print score
+        #   example for test prediction output:
+        #get first 6 segments from test:
+        oneHTML_X = X_test[0:6]
+        oneHTML_Y = Y_test[0:6]
+        for i in range(len(oneHTML_X)):
+            seg = oneHTML_X[i]
+            true_Y = oneHTML_Y[i]
+            #   Reshape for one input
+            reshapedSeg = seg.reshape(1,-1)
+            #   Predict on one segment
+            pred_Y = loaded_model.predict(reshapedSeg)
+            #   TODO: DENORMALIZE SO WE CAN COMPARE!!!!!
+            #See how we access the color and order
+            print "PREDICT: "
+            print pred_Y
+            print "Center color: "
+            print segment_colors[i]
+            print "Order (only 1-3 matter): "
+            print i-1
+            print "Actual: "
+            print true_Y
+            
+
+if __name__ == '__main__':
+    #create necessary folders
+    if not os.path.exists(TESTPATH):
+        os.makedirs(TESTPATH)
+    main()
