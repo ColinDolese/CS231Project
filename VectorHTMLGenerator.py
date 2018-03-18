@@ -90,8 +90,6 @@ def parseVectorHTML(vectorHTML, ranges, doc, tag, text, line):
 		doc.asis('* { box-sizing: border-box; }')
 		doc.asis('.class { display: flex; flex:1; }')
 		for i, title in enumerate(sectionTitles):
-			background = str(htmlColor(random.randint(0,255), 
-				random.randint(0,255),random.randint(0,255)))
 			section = title + '{'
 			for j, attr in enumerate(sorted(ranges.iterkeys())):
 				section += attr + ':' + ranges[attr][vectorHTML[i][j]] + ';'
