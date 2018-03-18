@@ -46,6 +46,7 @@ def createData(numSamples, training = True):
     i = 0
     for img in pageNames:
         real_segments, ordered_center_colors = k_cluster(img) # unflattened segments
+        print ordered_center_colors
         if len(real_segments) < 6:
             print "clustering returned junk"
             i += 1

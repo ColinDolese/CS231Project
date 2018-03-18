@@ -16,7 +16,13 @@ def denormalizeVectorHTML(normVectorHTML, ranges):
     vecCopy = np.copy(normVectorHTML)
     for i in range(vecCopy.shape[0]):
         for j, attr in enumerate(sorted(ranges.iterkeys())):
-                vecCopy[i][j] *= (len(ranges[attr])-1)
+                attrLen = len(ranges[attr])
+                vecCopy[i][j] *= (attrLen-1)
+                #clamp
+                if vecCopy[i][j] < 0:
+                    vecCopy[i][j] = 0
+                elif vecCopy[i][j] > attrLen-1:
+                    vecCopy[i][j] = attrLen-1
     
     return np.around(vecCopy).astype(int)
 

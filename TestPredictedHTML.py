@@ -39,38 +39,39 @@ def main():
             reshapedSeg = seg.reshape(1,-1)
             #   Predict on one segment
             pred_Y = loaded_model.predict(reshapedSeg)
+
+            #   post processing:
+            #for body:
+            if i == 0:
+                pred_Y[0][0] = pred_Y[0][2] = pred_Y[0][-2] = pred_Y[0][-1] = 0
+            #for header and footer:
+            elif i ==1 or i == 5:
+                pred_Y[0][1] = pred_Y[0][2] = pred_Y[0][3] = pred_Y[0][5] = pred_Y[0][6] = 0
+            else:
+                pred_Y[0][1] = pred_Y[0][3] = pred_Y[0][4] = pred_Y[0][5] = 0
             pred_VectorHTML.append(pred_Y)
 
-        pred_VectorHTML = np.squeeze(np.array(pred_VectorHTML))
-        pred_norm_VectorHTML = denormalizeVectorHTML(pred_VectorHTML, ranges)
 
-        for i in range(1,5):
+        pred_VectorHTML = np.squeeze(np.array(pred_VectorHTML))
+
+        pred_norm_VectorHTML = denormalizeVectorHTML(pred_VectorHTML, ranges)
+        for i in range(1,6):
             #put back color
-            r = int(segment_colors[i][0])
+            #segment_colors comes in order bgr that's why we access differently
+            r = int(segment_colors[i][2])
             g = int(segment_colors[i][1])
-            b = int(segment_colors[i][2])
-            print segment_colors[i][0]
-            print segment_colors[i][1]
-            print segment_colors[i][2]
-            print type(segment_colors[i][0])
-            pred_norm_VectorHTML[i][0] = str(htmlColor(r,g,b))
+            b = int(segment_colors[i][0])
+            pred_norm_VectorHTML[i][0] = r*256**2 + g*256 + b + 1
             #put back order
             if i >= 2 and i <= 4:
-                pred_norm_VectorHTML[i][-2] = i
+                pred_norm_VectorHTML[i][-2] = i-1
             
         html = convertToHTML(pred_norm_VectorHTML, ranges)
-        page = TESTPATH+'/page' + str(i+1) + 'PREDICTED.html'
+        page = TESTPATH+'/page' + str(1) + 'PREDICTED.html'
         f = open(page,"w")
         f.write(html)
         f.close()
-##            print "PREDICT: "
-##            print pred_Y
-##            print "Center color: "
-##            print segment_colors[i]
-##            print "Order (only 1-3 matter): "
-##            print i-1
-##            print "Actual: "
-##            print true_Y
+
             
 
 if __name__ == '__main__':

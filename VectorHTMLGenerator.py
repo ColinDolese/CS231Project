@@ -14,9 +14,9 @@ def buildRangesDictionary():
 		heightRange.append(str(i) + 'vh')
 
 	colorRange = ['']
-	for i in range(0,255):
-		for j in range(0,255):
-			for k in range(0,255):
+	for i in range(0,256):
+		for j in range(0,256):
+			for k in range(0,256):
 				colorRange.append(str(htmlColor(i,j,k)))
 
 	flexRange = ['']
@@ -85,13 +85,10 @@ def convertToHTML(vectorHTML, ranges):
 def parseVectorHTML(vectorHTML, ranges, doc, tag, text, line):
 	doc.asis('<!DOCTYPE html>')
 	sectionTitles = ['body', 'header', '.class > article', '.class > aside', '.class > nav', 'footer']
-
 	with tag('style'):
 		doc.asis('* { box-sizing: border-box; }')
 		doc.asis('.class { display: flex; flex:1; }')
 		for i, title in enumerate(sectionTitles):
-			background = str(htmlColor(random.randint(0,255), 
-				random.randint(0,255),random.randint(0,255)))
 			section = title + '{'
 			for j, attr in enumerate(sorted(ranges.iterkeys())):
 				section += attr + ':' + ranges[attr][vectorHTML[i][j]] + ';'
