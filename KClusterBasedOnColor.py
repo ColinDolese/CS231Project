@@ -100,13 +100,6 @@ def k_cluster(img_path):
         output.append(segments[ordering[i]])
     return output, ordered_colors    
 
-##segments, ordered_colors = k_cluster('test_data/2018_03_11-1805/page6.png')
-##print segments[0].shape
-####print ('done')
-##k_cluster('page2.png')
-####print ('done')
-##k_cluster('page3.png')
-##k_cluster('page4.png')
-##
-##k_cluster('page5.png')
+##segments, ordered_colors = k_cluster('test_data/2018_03_18-1114/page1.png')
+
 
