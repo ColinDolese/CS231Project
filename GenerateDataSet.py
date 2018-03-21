@@ -38,7 +38,8 @@ def getHTMLPages(numPagesGen, training, trainpath, testpath):
                 path = testpath
         for i in range(numPagesGen):
                 vectorHTML = generateVectorHTML(HTMLRanges)
-
+                print(i)
+                print(vectorHTML)
                 html = convertToHTML(vectorHTML, HTMLRanges)
                 vectorHTMLs.append(vectorHTML)
                 page = path+'/page' + str(i+1) + '.html'
@@ -59,4 +60,4 @@ def getHTMLPages(numPagesGen, training, trainpath, testpath):
 
 ##getHTMLPages(5)
 
-##getHTMLPages(1, True, "test_data/","train_data/")
+getHTMLPages(100, True, "test_data/","train_data/")
