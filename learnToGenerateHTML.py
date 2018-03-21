@@ -46,7 +46,6 @@ def createData(numSamples, training = True):
     i = 0
     for img in pageNames:
         real_segments, ordered_center_colors = k_cluster(img) # unflattened segments
-        print ordered_center_colors
         if len(real_segments) < 6:
             print "clustering returned junk"
             i += 1
@@ -87,16 +86,14 @@ def createData(numSamples, training = True):
         addedVectors = 0
         while addedVectors < 3:
             for vectorHTMLIndex in range(2,5):#vectorHTMLs[2:-1]:
-                vec = vectorHTMLs[i][vectorHTMLIndex]
-                normVec = normVecHTML[vectorHTMLIndex]
-##                print vec
+                vec = vectorHTMLs[i][vectorHTMLIndex].copy()
+                normVec = normVecHTML[vectorHTMLIndex].copy()
                 if int(vec[-2]) == addedVectors + 1:
                     #-2 index is "order" according to generateVectorHTML
                     xSamples.append(np.array(segments[int(vec[-2]+1)]))
-                    
                     ySamples.append(np.array(normVec))
                     
-                    sampleColors.append(ordered_center_colors[int(vec[-2]+1)])
+                    sampleColors.append(ordered_center_colors[int(vec[-2]+1)].copy())
                     addedVectors += 1
             
         xSamples.append(np.array(segments[-1]))
