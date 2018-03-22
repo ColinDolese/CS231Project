@@ -39,7 +39,7 @@ def getHTMLPages(numPagesGen, training, trainpath, testpath):
         for i in range(numPagesGen):
                 vectorHTML = generateVectorHTML(HTMLRanges)
                 print(i)
-                print(vectorHTML)
+##                print(vectorHTML)
                 html = convertToHTML(vectorHTML, HTMLRanges)
                 vectorHTMLs.append(vectorHTML)
                 page = path+'/page' + str(i+1) + '.html'

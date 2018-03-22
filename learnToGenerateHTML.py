@@ -2,12 +2,12 @@ from GenerateDataSet import *
 from KClusterBasedOnColor import *
 from sklearn.preprocessing import normalize
 import numpy as np
-from keras.models import Sequential
-from keras.layers.core import Dense, Activation, Dropout
-from keras.optimizers import SGD
-from keras.callbacks import ModelCheckpoint
-from keras.wrappers.scikit_learn import KerasRegressor
-from keras.models import load_model
+##from keras.models import Sequential
+##from keras.layers.core import Dense, Activation, Dropout
+##from keras.optimizers import SGD
+##from keras.callbacks import ModelCheckpoint
+##from keras.wrappers.scikit_learn import KerasRegressor
+##from keras.models import load_model
 from matplotlib import pyplot
 import pickle
 import os
@@ -111,17 +111,17 @@ def createData(numSamples, training = True):
     print xSamples.shape, ySamples.shape, sampleColors.shape
     return xSamples, ySamples, sampleColors
                                     
-def larger_model(sample_input, sample_output):
-    model = Sequential()
-    model.add(Dense(input_dim=len(sample_input), units=60, kernel_initializer='random_normal',activation='relu'))
-    model.add(Dropout(0.1))
-    model.add(Dense(units=1000, kernel_initializer='random_normal',activation='relu'))
-    model.add(Dropout(0.1))
-    model.add(Dense(units=100, kernel_initializer='random_normal',activation='relu'))
-    model.add(Dense(units=len(sample_output), kernel_initializer='random_normal'))
-    model.compile(loss='mse', optimizer='adam', metrics=['mse'])
-    return model
-                                                     
+##def larger_model(sample_input, sample_output):
+##    model = Sequential()
+##    model.add(Dense(input_dim=len(sample_input), units=60, kernel_initializer='random_normal',activation='relu'))
+##    model.add(Dropout(0.1))
+##    model.add(Dense(units=1000, kernel_initializer='random_normal',activation='relu'))
+##    model.add(Dropout(0.1))
+##    model.add(Dense(units=100, kernel_initializer='random_normal',activation='relu'))
+##    model.add(Dense(units=len(sample_output), kernel_initializer='random_normal'))
+##    model.compile(loss='mse', optimizer='adam', metrics=['mse'])
+##    return model
+##                                                     
 
 def main():
     #create necessary folders
@@ -150,20 +150,20 @@ def main():
     print "Done with train data"
 
     #Not working
-    if LEARNING_MODEL == 0:
-        filepath = FOLDERNAME+"/weightsBest.hdf5"
-        checkpoint = ModelCheckpoint(filepath, monitor='loss', verbose =1, save_best_only=True, mode='auto', period = 1)
-        callbacks_list = [checkpoint]
-        NUM_EPOCHS = 100000
-        epochCount = 0
-        model = larger_model(X_train[0], Y_train[0])
-        history = model.fit(X_train,Y_train,validation_split=0.1, epochs = NUM_EPOCHS, batch_size = 10,
-                  callbacks=callbacks_list, verbose = 0, initial_epoch = epochCount)
-                                      
-        epochCount +=NUM_EPOCHS
+##    if LEARNING_MODEL == 0:
+##        filepath = FOLDERNAME+"/weightsBest.hdf5"
+##        checkpoint = ModelCheckpoint(filepath, monitor='loss', verbose =1, save_best_only=True, mode='auto', period = 1)
+##        callbacks_list = [checkpoint]
+##        NUM_EPOCHS = 100000
+##        epochCount = 0
+##        model = larger_model(X_train[0], Y_train[0])
+##        history = model.fit(X_train,Y_train,validation_split=0.1, epochs = NUM_EPOCHS, batch_size = 10,
+##                  callbacks=callbacks_list, verbose = 0, initial_epoch = epochCount)
+##                                      
+##        epochCount +=NUM_EPOCHS
 ##    pyplot.plot(history.history['mean_squared_error'])
 ##    pyplot.show()
-    elif LEARNING_MODEL == 1:
+    if LEARNING_MODEL == 1:
         print "Start SVM learn"
         model = MultiOutputRegressor(GradientBoostingRegressor(random_state=0)).fit(X_train, Y_train)
         print "SVM learn done"
